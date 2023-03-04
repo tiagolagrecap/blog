@@ -1,0 +1,55 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+
+
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+
+   {% if request.user.is_authenticated %}
+        <form method="POST" action="">
+            <div class="form-group">
+<h3>New Post</h3>
+              {% csrf_token %}
+                {{form.title}}<br>
+                {{form.text}}<br>
+                {{form.author}}
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+
+   {% endif %}
+
+    <script>
+        var name = "{{ user.id }}";
+        document.getElementById("tig").value = name;
+
+    </script>
+
+
+                    {% for post in posts %}
+                    <div class="post-preview">
+                        <a href="{% url 'post-view' post.id %}">
+                            <h2 class="post-title">{{post.title}} </h2>
+                            <h3 class="post-subtitle">{{post.text}}</h3>
+                        </a>
+                        <p class="post-meta">
+                            Posted by
+                            {{post.author}}
+                            {{post.date_posted}}
+
+                     {% if request.user.is_authenticated %}
+                        </p>
+                        <a type="button" class="btn btn-primary" href="{% url 'post-update' post.id %}">Update</a>
+                        <a type="button" class="btn btn-danger" href="{% url 'post-delete' post.id %}">Delete</a>
+                     {% endif %}
+                        {% endfor %}
+                        </div>
+
+
+
+{% endblock %}
